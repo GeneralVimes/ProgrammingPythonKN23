@@ -61,5 +61,30 @@ def encode_move(move_str):#move_str виглядає як 5 символьний
 	return res
 
 
-print("c4-e5")
-print(encode_move("c4-e5"))
+
+#щоб декодувати хід у вигляді єдиного ичлса і отримати його текстове позначення
+def decode_move(move_num):
+	vert_names="abcdefgh"
+	horz_names="12345678"	
+	res=""
+	# дізнаємося останні три біта числа 
+	# для цього застосуємо оператор & з числом 7 (яке у двійокому вигляді виглядає як 00...00111)
+	end_horz_id = move_num&7#це буде номер горизонталі другої клітини
+	# дізнаємося номер вертикалі другої клітини
+	end_vert_id = (move_num&(7<<3))>>3#це буде номер горизонталі другої клітини
+	# дізнаємося номер горизонталі першої клітини
+	start_horz_id = (move_num&(7<<6))>>6
+	# дізнаємося номер вертикалі першої клітини
+	start_vert_id = (move_num&(7<<9))>>9
+
+	res=vert_names[start_vert_id]+horz_names[start_horz_id]+"-"+vert_names[end_vert_id]+horz_names[end_horz_id]
+
+
+	return res
+
+move_string = "c4-e5"
+print(move_string)
+move_num = encode_move(move_string)
+print(move_num)
+new_move_string = decode_move(move_num)
+print(new_move_string)
